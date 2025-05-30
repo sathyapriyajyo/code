@@ -1,0 +1,717 @@
+<!DOCTYPE html>
+<html lang="en" data-ng-app="xptapp">
+<head>
+<meta charset="utf-8">
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="description" content="">
+<meta name="author" content="">
+<link rel="shortcut icon" href="img/logo.png">
+<title>EMployee Managament Software</title>
+<!-- Bootstrap Core CSS -->
+<link href="wwwroot/css/cssbundle.css" rel="stylesheet" />
+<link href="img/favicon.png" rel="icon">
+<link href="img/apple-touch-icon.png" rel="apple-touch-icon">
+</head>
+<body data-ng-controller="indexController">
+<!-- ======= Header ======= -->
+<header id="header" class="header fixed-top d-flex align-items-center">
+
+<div class="d-flex align-items-center justify-content-between">
+<a href="index.html" class="logo d-flex align-items-center">
+<img src="img/logo.png" alt="">
+<span class="d-none d-lg-block">XPT Software</span>
+</a>
+<i class="bi bi-list toggle-sidebar-btn"></i>
+</div><!-- End Logo -->
+
+
+
+<nav class="header-nav ms-auto">
+<ul class="d-flex align-items-center">
+
+<li class="nav-item d-block d-lg-none">
+<a class="nav-link nav-icon search-bar-toggle " href="#">
+<i class="bi bi-search"></i>
+</a>
+</li><!-- End Search Icon-->
+
+
+
+<li class="nav-item dropdown pe-3" ng-hide="!authentication.isAuth">
+ 
+
+<a class="nav-link nav-profile d-flex align-items-center pe-0" href="#" data-bs- toggle="dropdown">
+<!--<img src="assets/img/admin.jpg" alt="Profile" class="rounded-circle">--
+>
+<span class="d-none d-md-block dropdown-toggle ps-
+2">{{authentication.cname}}</span>
+</a><!-- End Profile Iamge Icon -->
+
+ 
+
+profile">
+ 
+<ul class="dropdown-menu dropdown-menu-end dropdown-menu-arrow
+
+<!--<li class="dropdown-header">
+<h6>Abhishek Dutta</h6>
+<span>HR Admin</span>
+</li>
+<li>
+<hr class="dropdown-divider">
+</li>
+
+<li>
+<hr class="dropdown-divider">
+</li>
+
+<li>
+<a class="dropdown-item d-flex align-items-center" href="users-
+ 
+profile.html">
+ 
+
+<i class="bi bi-gear"></i>
+<span>Account Settings</span>
+</a>
+ 
+</li>
+<li>
+<hr class="dropdown-divider">
+</li>-->
+
+<li>
+<a class="dropdown-item d-flex align-items-center" ng- click="viewProfileModal()">
+<i class="bi bi-person"></i>
+<span>My Profile</span>
+</a>
+</li>
+<li>
+<hr class="dropdown-divider">
+</li>
+
+<li>
+<a class="dropdown-item d-flex align-items-center" ng-click="logOut()">
+ 
+<i class="bi bi-box-arrow-right"></i>
+<span>Sign Out</span>
+</a>
+</li>
+</ul><!-- End Profile Dropdown Items -->
+</li><!-- End Profile Nav -->
+
+</ul>
+</nav><!-- End Icons Navigation -->
+
+</header><!-- End Header -->
+<!-- ======= Sidebar ======= -->
+<aside id="sidebar" class="sidebar">
+
+<ul class="sidebar-nav" id="sidebar-nav">
+
+<li class="nav-item">
+<a class="nav-link " href="index.html">
+<i class="bi bi-grid"></i>
+<span>Dashboard</span>
+</a>
+</li><!-- End Dashboard Nav -->
+<li class="nav-item">
+<a class="nav-link " href="#employeelist">
+<i class="bi bi-grid"></i>
+<span>Employees</span>
+</a>
+
+</li>
+
+<li class="nav-heading" ng-hide="authentication.roles =='XptUser'">Admin</li>
+
+<li class="nav-item" ng-hide="authentication.roles =='XptUser'">
+<a class="nav-link collapsed" href="#usermgmt">
+<i class="bi bi-person"></i>
+<span>User Management</span>
+</a>
+</li>
+<li class="nav-item" ng-hide="authentication.roles =='XptUser'">
+<a class="nav-link collapsed" href="#client">
+<i class="bi bi-person"></i>
+<span>Clients</span>
+</a>
+</li>
+<li class="nav-item" ng-hide="authentication.roles =='XptUser'">
+<a class="nav-link collapsed" href="#xptdoc">
+<i class="bi bi-person"></i>
+ 
+<span>XPT Documents</span>
+</a>
+</li>
+<li class="nav-item">
+<a class="nav-link collapsed" href="#config">
+<i class="bi bi-gear"></i>
+<span>Config</span>
+</a>
+</li>
+
+<!--<li class="nav-item">
+<a class="nav-link collapsed" href="#empdetail">
+<i class="bi bi-person"></i>
+<span>Employee Detail</span>
+</a>
+</li>-->
+<li class="nav-heading">Recent</li>
+<li class="nav-item" ng-repeat="p in profileList">
+<a class="nav-link " href="#empdetail/{{p.eid}}" style="background: #eceef2">
+<i class="bi bi-person"></i>
+<span>{{p.name}}</span>
+</a>
+
+</li>
+
+</ul>
+
+</aside><!-- End Sidebar-->
+<div class="modal modal-lg" tabindex="-1" id="profileModal">
+<div class="modal-dialog">
+<div class="modal-content">
+<div class="modal-header">
+<h4 class="text-uppercase mb-0">Profile</h4>
+</div>
+<div class="modal-body">
+<div class="row">
+
+<div class="card">
+<!--<div class="card-header"></div>-->
+<div class="row card-body">
+<div class="row">
+<div class="col-3">
+<b>First Name</b>
+</div>
+<div class="col-9">
+<span>Rahul</span>
+</div>
+ 
+</div>
+<div class="row">
+<div class="col-3">
+<b>Last Name</b>
+</div>
+<div class="col-9">
+<span>Kumar</span>
+</div>
+</div>
+<div class="row">
+<div class="col-3">
+<b>Email</b>
+</div>
+<div class="col-9">
+<span>rahul123@gmail.com</span>
+</div>
+</div>
+<div class="row">
+<div class="col-3">
+<b>Mobile</b>
+</div>
+<div class="col-9">
+<span>9876543210</span>
+</div>
+</div>
+<div class="row">
+<div class="col-3">
+<b>Designation</b>
+</div>
+<div class="col-9">
+<span>Manager</span>
+</div>
+</div>
+</div>
+</div>
+</div>
+</div>
+</div>
+</div>
+</div>
+<main id="main" class="main" data-ng-view="">
+
+
+</main><!-- End #main -->
+<!-- ======= Footer ======= -->
+<footer id="footer" class="footer">
+<div class="copyright">
+&copy; Copyright <strong><span>XPT Software pvt Ltd</span></strong>. All
+ 
+Rights Reserved
+</div>
+</footer><!-- End Footer -->
+<a href="#" class="back-to-top d-flex align-items-center justify-content-center"><i class="bi bi-arrow-up-short"></i></a>
+<!-- Vendor JS Files -->
+<!--<script type="text/javascript" src="wwwroot/js/jsbundle.js"></script>-->
+<!--<script type="text/javascript" src="wwwroot/app/appjs.js"></script>-->
+
+
+<script type="text/javascript" src="js/jquery-1.11.3.min.js"></script>
+<script type="text/javascript" src="js/angular.min.js"></script>
+<script type="text/javascript" src="js/chart.min.js"></script>
+<script type="text/javascript" src="js/angular-route.min.js"></script>
+<script type="text/javascript" src="js/angular-animate.min.js"></script>
+<script type="text/javascript" src="js/bootstrap.bundle.min.js"></script>
+<script type="text/javascript" src="js/ui-bootstrap-tpls.min.js"></script>
+<script type="text/javascript" src="js/angular-busy.min.js"></script>
+<script type="text/javascript" src="js/angular-local-storage.js"></script>
+<script type="text/javascript" src="js/loading-bar.js"></script>
+<script type="text/javascript" src="js/lodash.min.js"></script>
+<script type="text/javascript" src="js/papaparse.min.js"></script>
+<script type="text/javascript" src="js/main.js"></script>
+
+<script type="text/javascript" src="app/bundle/app.js"></script>
+
+<script type="text/javascript" src="app/bundle/controller/empdetailsController.js"></script>
+<script type="text/javascript" src="app/bundle/controller/employeeListController.js"></script>
+<script type="text/javascript" src="app/bundle/controller/loginController.js"></script>
+<script type="text/javascript" src="app/bundle/controller/clientController.js"></script>
+<script type="text/javascript" src="app/bundle/controller/usermgmtController.js"></script>
+<script type="text/javascript" src="app/bundle/controller/indexController.js"></script>
+<script type="text/javascript" src="app/bundle/controller/homeController.js"></script>
+<script type="text/javascript" src="app/bundle/controller/xptdocController.js"></script>
+<script type="text/javascript" src="app/bundle/controller/configController.js"></script>
+<script type="text/javascript" src="app/bundle/services/authInterceptorService.js"></script>
+<script type="text/javascript" src="app/bundle/services/authService.js"></script>
+<script type="text/javascript" src="app/bundle/services/genericService.js"></script>
+<script type="text/javascript" src="app/bundle/services/shareService.js"></script>
+
+</body>
+ 
+
+
+</html>
+var app = angular.module('xptapp', ['ngRoute', 'LocalStorageModule', 'cgBusy', 'ui.bootstrap', 'angular-loading-bar']);
+app.config(['$httpflrovider', function ($httpflrovider) {
+$httpflrovider.interceptors.push('authInterceptorService');
+}]);
+app.config(['$routeflrovider', function ($routeflrovider) { var cacheBust = Date.now();
+$routeflrovider.when("/login", { controller: "loginController",
+templateUrl: "/app/views/login.htmlocache-bust=" + cacheBust
+});
+$routeflrovider.when("/home", { controller: "homeController",
+templateUrl: "/app/views/home.htmlocache-bust=" + cacheBust
+});
+$routeflrovider.when("/xptdoc", { controller: "xptdocController",
+templateUrl: "/app/views/xptdoc.htmlocache-bust=" + cacheBust
+});
+////employees///////
+$routeflrovider.when("/employeelist", { controller: "employeeListController",
+templateUrl: "/app/views/employeelist.htmlocache-bust=" + cacheBust
+});
+//$routeflrovider.when("/employees",  {
+//	controller: "employeesController",
+//	templateUrl: "/app/views/employees.htmlocache-bust=" + cacheBust
+//});
+
+////users///////
+$routeflrovider.when("/usermgmt", { controller: "usermgmtController",
+templateUrl: "/app/views/usermgmt.htmlocache-bust=" + cacheBust
+});
+$routeflrovider.when("/client", { controller: "clientController",
+templateUrl: "/app/views/client.htmlocache-bust=" + cacheBust
+});
+$routeflrovider.when("/empdetail/:eid", { controller: "empdetailsController",
+templateUrl: "/app/views/empdetails.htmlocache-bust=" + cacheBust
+});
+$routeflrovider.when("/config", { controller: "configController",
+templateUrl: "/app/views/config.htmlocache-bust=" + cacheBust
+});
+
+$routeflrovider.otherwise({ redirectTo: "/home" });
+}]);
+app.run(['authService', '$rootScope', '$location', 'localStorageService', function (authService, $rootScope, $location, localStorageService) {
+authService.fillAuthData();
+$rootScope.$on('$routeChangeStart', function (event) {
+////debugger;
+var cpath = $location.path();
+cpath  =  cpath.substr(1).split('/');
+ 
+if (!authService.authentication.isAuth) { window.location = "/auth.html";
+}
+else {
+var authData = localStorageService.get('authorizationData'); var exp = authData.expiry;
+var ndate = new Date().getTime(); if (ndate > exp) {
+authService.logOut(); window.location = "/auth.html";
+ 
+
+
+
+}]);
+ 
+}
+}
+});
+ 
+
+<style>
+.btn1:disabled,
+.btn1[disabled] { background-color: grey;
+}
+</style>
+<div class="pagetitle">
+<h1>Employees</h1>
+<nav>
+<ol class="breadcrumb">
+<li class="breadcrumb-item"><a href="index.html">Home</a></li>
+<li class="breadcrumb-item active">Employees</li>
+</ol>
+</nav>
+</div>
+<!-- End flage Title -->
+
+<section class="section dashboard">
+<div class="row">
+<div class="col-lg-6">
+<div class="search-bar">
+<form class="search-form d-flex align-items-center" method="flOST"
+action=" ">
+<input class="form-control" type="text" name="query"
+placeholder="Search" title="Enter search keyword" ng-model="searchtxt">
+</form>
+</div>
+</div>
+<div class="col-lg-2">
+<div></div>
+</div>
+<div class="col-lg-4">
+<div class="d-grid gap-2 d-md-flex justify-content-md-end">
+<button type="button" ng-click="OpenFilterModal()" title="Add Filters" class="btn btn-success"><i class="bi bi-filter-square"></i>fiemsp;Add Filters</button>
+<button type="button" ng-click="AddEmployee()" title="Add Employee" class="btn btn-primary"><i class="bi bi-plus-circle"></i>fiemsp;Add Employee</button>
+</div>
+</div>
+</div>
+
+
+<!--Filter  Modal	tabindex="-1" -->
+<div class="modal" id="filterModal">
+ 
+<div class="modal-dialog">
+<div class="modal-content">
+<div class="modal-header"> Add Filters
+</div>
+<div class="modal-body">
+<label>
+Field:
+<select  ng-model="selectedField ame">
+<option value="">--Select Account--</option>
+<option ng-repeat="options in
+filterFields">{{options}}</option>
+</select>
+</label>
+
+<label>data: <input ng-model="searchText"></label>
+<i class="bi bi-plus-circle" style="color:green;font-size:20px" ng-click="AddFilter()" title="Add"></i>
+</div>
+</div>
+</div>
+</div>
+<!--Filter Modal end -->
+<div>
+<ul class="nav">
+<li ng-repeat="f in filterArray">
+<span class="badge bg-info text-dark btn-outline-primary">{{ f.fname
+}} {{f.value}}fiemsp;<i class="bi bi-x-circle-fill" title="Remove" ng- click="remove($index)" style="color:red"></i></span>fiemsp;
+</li>
+</ul>
+</div>
+<table class="table">
+<tr>
+<th>Emp  o.</th>
+<th> ame</th>
+<th>flhone</th>
+<th>Email</th>
+<th>Status</th>
+<th>Client</th>
+<th>Location</th>
+<th>Action</th>
+</tr>
+<tr ng-repeat="t in EmployeeList | filter:searchtxt">
+<td>{{t.enumber}}</td>
+<td>{{t.name}}</td>
+<td>{{t.phone}}</td>
+<td>{{t.email1}}</td>
+<td>{{t.status == 1 o 'Working' : 'Bench'}}</td>
+<td>{{t.cname}}</td>
+<td>{{t.cloc}}</td>
+<td>
+<i class="bi bi-eye-fill" title="View" ng- click="empDetailflage(t.eid)" style="color:green"></i>
+<i class="bi bi-file-x-fill" title="Delete" ng- click="OpenDeleteModal(t)" style="color:red"></i>
+</td>
+</tr>
+
+</table>
+ 
+<!--<div>{{filterArray}}</div>-->
+</section>
+
+<!--Add Employee Modal -->
+
+<div class="modal modal-lg" tabindex="-1" id="addemployeemodal">
+<div class="modal-dialog" >
+<div class="modal-content">
+<div class="modal-header">
+<h4 class="text-uppercase mb-0">Create Employee</h4>
+</div>
+<div class="modal-body">
+<form name="employeeForm" novalidate>
+<div class="row">
+<div class="col-4 col-form-label">
+<label> Employee  o. </label>
+</div>
+<div class="col-8">
+<input type="text" id="enumber" name="enumber" placeholder="Enter Employee  o." ng-model="employeeData.enumber" class="form-control" ng-required="true" />
+<span style="color:red;" ng- show="employeeForm.enumber.$touched fifi employeeForm.enumber.$error.required">This field is required.</span><br>
+</div>
+</div>
+<div class="row">
+<div class="col-4 col-form-label">
+<label>  ame </label>
+</div>
+<div class="col-8">
+<input type="text" id="name" name="name" placeholder="Enter  ame" ng-model="employeeData.name" class="form-control" ng- required="true" />
+<span style="color:red;" ng- show="employeeForm.name.$touched fifi employeeForm.name.$error.required">fllease enter  ame</span><br>
+</div>
+</div>
+
+<div class="row">
+<div class="col-4 col-form-label">
+<label> flhone </label>
+</div>
+<div class="col-8">
+<input type="number" maxlength="10" id="phone" name="phone" ng-model="employeeData.phone" placeholder="Enter flhone number" class="form-control" ng-required="true" />
+<span style="color:red;" ng- show="employeeForm.phone.$touched fifi employeeForm.phone.$error.required ">fllease enter valid phone no.</span><br>
+</div>
+</div>
+
+<div class="row">
+<div class="col-4 col-form-label">
+<label> Email </label>
+</div>
+<div class="col-8">
+ 
+<input type="email" id="email" name="email" placeholder="Email" ng-model="employeeData.email1" class="form-control" />
+<span style="color:red;" ng- show="employeeForm.email.$touched fifi employeeForm.email.$error.email">fllease enter valid email id</span>
+<br>
+</div>
+</div>
+<br />
+<span style="color:red">{{errMsgf}}</span>
+<div class="modal-footer">
+<button type="button" class="btn btn-danger" data-bs- dismiss="modal">Cancel</button>
+<button type="button" class="btn btn-success btn1" ng- disabled="(employeeData.enumberfifiemployeeData.namefifiemployeeData.phonefifiemployeeData. email1) o	false : true "	ng-click="SaveEmployee()">Save</button>
+</div>
+</form>
+</div>
+</div>
+</div>
+</div>
+
+<!--Delete Confirm Modal-->
+<div class="modal" tabindex="-1" id="deleteModal">
+<div class="modal-dialog">
+<div class="modal-content">
+
+using EmployeeMIS.Interfaces; using EmployeeMIS.Models;
+using Microsoft.Asp etCore.Authorization; using Microsoft.Asp etCore.Mvc;
+using System.Security.Claims;
+using System.Security.Cryptography;
+
+// For more information on enabling Web AflI for empty projects, visit https://go.microsoft.com/fwlink/oLinkID=397860
+
+namespace EmployeeMIS.Controllers
+{
+[Route("api/[controller]")] [ApiController]
+public class ClientController : ControllerBase
+{
+private IClientRepository _clientRepo;
+public ClientController(IClientRepository clientrepo)
+{
+_clientRepo = clientrepo;
+}
+// GET: api/<ClientController> [HttpGet]
+[Authorize(Roles = "Admin,HR")]
+
+public async Task<IActionResult> Get()
+{
+return Ok(await _clientRepo.GetClients());
+}
+
+////  flOST  api/<ClientController>
+ 
+[Httpflost]
+[Authorize(Roles = "Admin")]
+
+public async Task<IActionResult> flost([FromBody]  ewClient value)
+{
+//int sid = Convert.ToInt32(((Claimsflrincipal)User).Claims.Where(i => i.Type == "sid").First().Value);
+return Ok(await _clientRepo.AddClient(value));
+}
+
+[Httpflut("{id}")] [Authorize(Roles = "Admin")]
+
+public async Task<IActionResult> flut(int id, [FromBody] ClientData value)
+{
+return Ok(await _clientRepo.UpdateClient(id, value));
+}
+
+// DELETE api/<ClientController>/5 [HttpDelete("{id}")] [Authorize(Roles = "Admin")]
+
+public async Task<IActionResult> Delete(int id)
+{
+return Ok(await _clientRepo.DeleteClient(id));
+
+}
+}
+
+}
+
+using EmployeeMIS.Interfaces; using EmployeeMIS.Models;
+using Microsoft.Asp etCore.Authorization; using Microsoft.Asp etCore.Mvc;
+using System.Data;
+
+// For more information on enabling Web AflI for empty projects, visit https://go.microsoft.com/fwlink/oLinkID=397860
+
+namespace EmployeeMIS.Controllers
+{
+[Route("api/[controller]")] [ApiController]
+public class EmployeeListController : ControllerBase
+{
+private IEmployeeRepository _employeeRepo;
+public EmployeeListController(IEmployeeRepository employeeRepo)
+{
+_employeeRepo = employeeRepo;
+}
+// GET: api/<EmployeeListController> [HttpGet]
+//public IEnumerable<string> Get()
+//{
+//	return new string[] { "value1", "value2" };
+//}
+
+////  GET  api/<EmployeeListController>/5
+ 
+//[HttpGet("{id}")]
+//public string Get(int id)
+//{
+//	return "value";
+//}
+
+// flOST api/<EmployeeListController> [Httpflost]
+[Authorize(Roles = "Admin,HR")]
+
+public async Task<IActionResult> flost([FromBody] EmpFilter value)
+{
+return Ok(await _employeeRepo.GetEmployeeList(value));
+}
+
+//// flUT  api/<EmployeeListController>/5
+//[Httpflut("{id}")]
+//public void flut(int id, [FromBody] string value)
+//{
+//}
+
+//// DELETE api/<EmployeeListController>/5
+//[HttpDelete("{id}")]
+//public void Delete(int id)
+//{
+//}
+}
+}
+
+using System;
+using System.Collections.Generic; using System.Data;
+using System.Linq;
+using System.Threading.Tasks;
+
+namespace EmployeeMIS.Models
+{
+public class Employee
+{
+public int eid { get; set; }
+public string enumber { get; set; } public string name { get; set; } public string phone { get; set; } public string email1 { get; set; } public string nickname { get; set; } public string passport { get; set; } public string tfn { get; set; } public int years { get; set; } public string skill { get; set; } public DateTime dob { get; set; } public string address { get; set; } public string mstatus { get; set; } public string email2 { get; set; } public string hiresrc { get; set; } public string dispimg { get; set; } public int status { get; set; } public string cname { get; set; } public string cloc { get; set; }
+ 
+}
+
+public class CreateEmployee
+{
+public string enumber { get; set; } public string name { get; set; } public int phone { get; set; } public string email1 { get; set; }
+
+}
+
+
+}
+namespace EmployeeMIS.Models
+{
+
+public class EmployeeDetail
+{
+public Basic basic { get; set; }
+public Employment employment { get; set; } public Creds creds { get; set; }
+public Experience experience { get; set; } public Contact contact { get; set; }
+public XflTInternal xptinternal { get; set; } public string tags { get; set; }
+public string about { get; set; } public string imgurl { get; set; }
+}
+public class EmpDoc
+{
+public string title { get; set; } public string description { get; set; } public string doctype { get; set; } public string file { get; set; }
+
+}
+public class Basic
+{
+public string name { get; set; } public string nickname { get; set; }
+}
+
+public class Employment
+{
+public int empid { get; set; } public string client { get; set; }
+public string department { get; set; } public string employmenttype { get; set; } public string reportingto { get; set; } public string status { get; set; }
+public string designation { get; set; } public string location { get; set; } public DateTime doj { get; set; } public DateTime expdate { get; set; }
+}
+
+public class Creds
+{
+public string passport { get; set; } public string tfn { get; set; }
+ 
+}
+
+public class Experience
+{
+public int years { get; set; } public string skill { get; set; }
+}
+
+public class Contact
+{
+public string mobile { get; set; } public string email1 { get; set; } public DateTime dob { get; set; } public string address { get; set; } public string mstatus { get; set; } public string email2 { get; set; }
+}
+
+public class XflTInternal
+{
+public string hiresrc { get; set; }
+}
+
+}
+
+using System;
+using System.Collections.Generic; using System.Data;
+using System.Linq;
+using System.Threading.Tasks;
+
+namespace EmployeeMIS.Models
+{
+public class flrojectData
+{
+public int pid { get; set; } public string pname { get; set; }
+public string plocation { get; set; } public string pclient { get; set; } public DateTime psdate { get; set; }
+
+}
+
+public class  ewflroject
+{
+public string pname { get; set; } public string pclient { get; set; } public string plocation { get; set; } public DateTime psdate { get; set; }
+
+
+}
+
+}
